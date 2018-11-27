@@ -30,26 +30,9 @@ node("jenkins-k8s") {
     }
     stage('Deploy') {
         echo "5. Deploy Stage"
-        def userInput = input(
-            id: 'userInput',
-            message: 'Choose a deploy environment',
-            parameters: [
-                [
-                    $class: 'ChoiceParameterDefinition',
-                    choices: "Dev\nQA\nProd",
-                    name: 'Env'
-                ]
-            ]
-        )
-        echo "This is a deploy step to ${userInput}"
+        sh "ls -l"
+        sh "cat k8s.yaml"
         sh "sed -i 's/<BUILD_TAG>/${build_tag}/' k8s.yaml"
-        if (userInput == "Dev") {
-            // deploy dev stuff
-        } else if (userInput == "QA"){
-            // deploy qa stuff
-        } else {
-            // deploy prod stuff
-        }
         sh "kubectl apply -f k8s.yaml"
     }
 }
